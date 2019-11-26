@@ -70,8 +70,8 @@ class TypeConverter {
                 return new \SoapVar($value, XSD_INT, 'xsd:int');
             case 'array':
                 $arr =  array_map(function($element){
-                    if(!is_string($element)) {
-                        throw new \RuntimeException('Element is not a string');
+                    if(!is_string($element) && null !== $element) {
+                        throw new \RuntimeException('Element is not a string/null');
                     }
                     return TypeConverter::correctValue($element);
                 }, $value);
