@@ -46,13 +46,12 @@ class TypeConverter {
     }
 
     private function convertDataObject($value) {
-        if ($value instanceof \KeyAnyValue || $value instanceof \OptionValue) {
-            $value->value = self::correctValue($value->value);
-        }
         $objProperties = get_object_vars($value);
         foreach ($objProperties as $propertyName => $propertyValue)
             $value->$propertyName = $this->convert($propertyValue);
-
+        if ($value instanceof \KeyAnyValue || $value instanceof \OptionValue) {
+            $value->value = self::correctValue($value->value);
+        }
         return $value;
     }
 
@@ -71,6 +70,9 @@ class TypeConverter {
                 return new \SoapVar($value, XSD_INT, 'xsd:int');
             case 'array':
                 $arr =  array_map(function($element){
+                    if (null === $element) {
+                        $element = '';
+                    }
                     if(!is_string($element)) {
                         throw new \RuntimeException('Element is not a string');
                     }
