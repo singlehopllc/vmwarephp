@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-   Copyright 2005-2011 VMware, Inc.  All rights reserved.
+   Copyright 2005-2020 VMware, Inc.  All rights reserved.
 -->
 <schema
    targetNamespace="urn:vim25"
@@ -11,14 +11,11 @@
 >
    <complexType name="DynamicArray">
       <sequence>
-         <element name="dynamicType" type="xsd:string" minOccurs="0" />
          <element name="val" type="xsd:anyType" maxOccurs="unbounded" />
       </sequence>
    </complexType>
    <complexType name="DynamicData">
       <sequence>
-         <element name="dynamicType" type="xsd:string" minOccurs="0" />
-         <element name="dynamicProperty" type="vim25:DynamicProperty" minOccurs="0" maxOccurs="unbounded" />
       </sequence>
    </complexType>
    <complexType name="DynamicProperty">
@@ -62,6 +59,35 @@
       <sequence>
          <element name="LocalizableMessage" type="vim25:LocalizableMessage" minOccurs="0" maxOccurs="unbounded" />
       </sequence>
+   </complexType>
+   <complexType name="LocalizedMethodFault">
+      <complexContent>
+         <extension base="vim25:DynamicData">
+            <sequence>
+               <element name="fault" type="vim25:MethodFault" />
+               <element name="localizedMessage" type="xsd:string" minOccurs="0" />
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <complexType name="MethodFault">
+      <sequence>
+         <element name="faultCause" type="vim25:LocalizedMethodFault" minOccurs="0" />
+         <element name="faultMessage" type="vim25:LocalizableMessage" minOccurs="0" maxOccurs="unbounded" />
+      </sequence>
+   </complexType>
+   <complexType name="ArrayOfMethodFault">
+      <sequence>
+         <element name="MethodFault" type="vim25:MethodFault" minOccurs="0" maxOccurs="unbounded" />
+      </sequence>
+   </complexType>
+   <complexType name="RuntimeFault">
+      <complexContent>
+         <extension base="vim25:MethodFault">
+            <sequence>
+            </sequence>
+         </extension>
+      </complexContent>
    </complexType>
    <complexType name="HostCommunication">
       <complexContent>
@@ -191,37 +217,6 @@
          </extension>
       </complexContent>
    </complexType>
-   <complexType name="LocalizedMethodFault">
-      <complexContent>
-         <extension base="vim25:DynamicData">
-            <sequence>
-               <element name="fault" type="vim25:MethodFault" />
-               <element name="localizedMessage" type="xsd:string" minOccurs="0" />
-            </sequence>
-         </extension>
-      </complexContent>
-   </complexType>
-   <complexType name="MethodFault">
-      <sequence>
-         <element name="dynamicType" type="xsd:string" minOccurs="0" />
-         <element name="dynamicProperty" type="vim25:DynamicProperty" minOccurs="0" maxOccurs="unbounded" />
-         <element name="faultCause" type="vim25:LocalizedMethodFault" minOccurs="0" />
-         <element name="faultMessage" type="vim25:LocalizableMessage" minOccurs="0" maxOccurs="unbounded" />
-      </sequence>
-   </complexType>
-   <complexType name="ArrayOfMethodFault">
-      <sequence>
-         <element name="MethodFault" type="vim25:MethodFault" minOccurs="0" maxOccurs="unbounded" />
-      </sequence>
-   </complexType>
-   <complexType name="RuntimeFault">
-      <complexContent>
-         <extension base="vim25:MethodFault">
-            <sequence>
-            </sequence>
-         </extension>
-      </complexContent>
-   </complexType>
    <complexType name="ManagedObjectReference">
       <simpleContent>
          <extension base="xsd:string">
@@ -239,6 +234,16 @@
          <element name="anyType" type="xsd:anyType" minOccurs="0" maxOccurs="unbounded" />
       </sequence>
    </complexType>
+   <complexType name="ArrayOfAnyURI">
+      <sequence>
+         <element name="anyURI" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded" />
+      </sequence>
+   </complexType>
+   <complexType name="ArrayOfBase64Binary">
+      <sequence>
+         <element name="base64Binary" type="xsd:base64Binary" minOccurs="0" maxOccurs="unbounded" />
+      </sequence>
+   </complexType>
    <complexType name="ArrayOfManagedObjectReference">
       <sequence>
          <element name="ManagedObjectReference" type="vim25:ManagedObjectReference" minOccurs="0" maxOccurs="unbounded" />
@@ -252,6 +257,11 @@
    <complexType name="ArrayOfByte">
       <sequence>
          <element name="byte" type="xsd:byte" minOccurs="0" maxOccurs="unbounded" />
+      </sequence>
+   </complexType>
+   <complexType name="ArrayOfDouble">
+      <sequence>
+         <element name="double" type="xsd:double" minOccurs="0" maxOccurs="unbounded" />
       </sequence>
    </complexType>
    <complexType name="ArrayOfInt">
